@@ -1,0 +1,17 @@
+name: Keep backend alive
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"  # every 10 minutes
+  workflow_dispatch:         # manual trigger from GitHub UI
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping health endpoint
+        run: |
+          curl -sf https://snapdo-backend.onrender.com/api/health \
+            --max-time 60 \
+            && echo "Backend is alive" \
+            || echo "Backend did not respond (may still be waking up)"

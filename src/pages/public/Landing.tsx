@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router";
 import { motion, AnimatePresence } from "motion/react";
 import { ArrowRight, MessageSquare, FileText, Zap, Globe, Shield, BarChart2, Layers, Download } from "lucide-react";
@@ -59,16 +59,28 @@ Ramesh: aur 2kg toor daal bhi
 Ramesh: sarso tel ek litre bhi add karo
 Vendor: theek hai kal tak bhej deta hoon`;
 
+const BASE = import.meta.env.VITE_API_BASE_URL as string;
+
 function LiveDemo() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [warmingUp, setWarmingUp] = useState(false);
+
+  // Pre-warm the backend silently as soon as the demo section mounts
+  useEffect(() => {
+    fetch(`${BASE}/health`).catch(() => {});
+  }, []);
   const [result, setResult] = useState<DemoResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const run = async (customInput?: string) => {
     setLoading(true);
+    setWarmingUp(false);
     setError(null);
     setResult(null);
+
+    const warmupTimer = setTimeout(() => setWarmingUp(true), 5000);
+
     try {
       const body = customInput
         ? {
@@ -81,20 +93,38 @@ function LiveDemo() {
           }
         : undefined;
 
-      const data = await apiFetch<DemoResponse>("/demo/run", {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 75000);
+
+      const res = await fetch(`${BASE}/demo/run`, {
         method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: body ? JSON.stringify(body) : undefined,
+        signal: controller.signal,
       });
+      clearTimeout(timeout);
+
+      if (!res.ok) {
+        if (res.status === 429) {
+          setError("Demo limit reached — sign up for full access.");
+        } else {
+          setError(`Server error (${res.status}). Try again in a moment.`);
+        }
+        return;
+      }
+
+      const data: DemoResponse = await res.json();
       setResult(data);
     } catch (err: unknown) {
-      const status = (err as { status?: number }).status;
-      if (status === 429) {
-        setError("Demo limit reached — sign up for full access.");
+      if ((err as Error).name === "AbortError") {
+        setError("The server took too long to respond. It may be waking up — try again in 30 seconds.");
       } else {
-        setError("Something went wrong. Try again in a moment.");
+        setError("Could not reach the server. Check your connection and try again.");
       }
     } finally {
+      clearTimeout(warmupTimer);
       setLoading(false);
+      setWarmingUp(false);
     }
   };
 
@@ -129,7 +159,7 @@ function LiveDemo() {
             className="flex-1"
           >
             <Zap size={15} />
-            {loading ? "Claude is reading your chat…" : "Try it live — no sign up needed"}
+            {warmingUp ? "Server waking up, hang tight…" : loading ? "Claude is reading your chat…" : "Try it live — no sign up needed"}
           </Button>
         </div>
         {error && (
