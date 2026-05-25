@@ -1,1 +1,211 @@
 @import "tailwindcss";
+
+@theme {
+  /* ── Colors ─────────────────────────────────────────── */
+  --color-ink: #000000;
+  --color-on-primary: #ffffff;
+  --color-canvas-night: #000000;
+  --color-canvas-night-elevated: #0a0a0a;
+  --color-canvas-light: #ffffff;
+  --color-canvas-cream: #fbfbf5;
+  --color-surface-elevated-dark: #1e2c31;
+  --color-shade-30: #d4d4d8;
+  --color-shade-40: #a1a1aa;
+  --color-shade-50: #71717a;
+  --color-shade-60: #52525b;
+  --color-shade-70: #3f3f46;
+  --color-hairline-light: #e4e4e7;
+  --color-hairline-dark: #1e2c31;
+  --color-aloe: #c1fbd4;
+  --color-pistachio: #d4f9e0;
+  --color-link-cool-1: #9dabad;
+  --color-link-cool-2: #9797a2;
+  --color-link-cool-3: #bdbdca;
+  --color-link-mint: #99b3ad;
+
+  /* ── WhatsApp brand ──────────────────────────────────── */
+  --color-wa-green: #25D366;
+  --color-wa-light: #E6FFDA;
+  --color-wa-linen: #FCF5EB;
+  --color-wa-dark: #111B21;
+
+  /* ── Font families ───────────────────────────────────── */
+  --font-display: "NeueHaasGrotesk Display", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-body: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
+
+  /* ── Border radius ───────────────────────────────────── */
+  --radius-xs: 4px;
+  --radius-sm: 5px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 20px;
+  --radius-pill: 9999px;
+
+}
+
+/* ── Global base ─────────────────────────────────────── */
+*, *::before, *::after {
+  font-feature-settings: "ss03";
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 420;
+  line-height: 1.5;
+  color: #000000;
+  background-color: #ffffff;
+}
+
+/* ── Display type scale ──────────────────────────────── */
+.text-display-xxl {
+  font-family: var(--font-display);
+  font-size: 96px;
+  font-weight: 330;
+  line-height: 1.0;
+  letter-spacing: 2.4px;
+}
+
+.text-display-xl {
+  font-family: var(--font-display);
+  font-size: 70px;
+  font-weight: 330;
+  line-height: 1.0;
+  letter-spacing: 0;
+}
+
+.text-display-lg {
+  font-family: var(--font-display);
+  font-size: 55px;
+  font-weight: 330;
+  line-height: 1.16;
+  letter-spacing: 0;
+}
+
+.text-display-md {
+  font-family: var(--font-display);
+  font-size: 48px;
+  font-weight: 330;
+  line-height: 1.14;
+  letter-spacing: 0;
+}
+
+.text-heading-xl {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 1.28;
+  letter-spacing: 0.42px;
+}
+
+.text-heading-lg {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 1.14;
+  letter-spacing: 0.36px;
+}
+
+.text-heading-md {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: 0.3px;
+}
+
+.text-heading-sm {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: 0.72px;
+}
+
+.text-body-lg {
+  font-family: var(--font-body);
+  font-size: 18px;
+  font-weight: 550;
+  line-height: 1.56;
+  letter-spacing: 0;
+}
+
+.text-body-md {
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 420;
+  line-height: 1.5;
+  letter-spacing: 0;
+}
+
+.text-body-strong {
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 550;
+  line-height: 1.5;
+  letter-spacing: 0;
+}
+
+.text-caption {
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.49;
+  letter-spacing: 0.28px;
+}
+
+.text-micro {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: -0.13px;
+}
+
+.text-eyebrow {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: 0.72px;
+  text-transform: uppercase;
+}
+
+.text-code {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0;
+}
+
+/* ── Responsive display scale (mobile) ──────────────── */
+@media (max-width: 767px) {
+  .text-display-xxl { font-size: 56px; letter-spacing: 1px; }
+  .text-display-xl  { font-size: 42px; }
+  .text-display-lg  { font-size: 36px; }
+  .text-display-md  { font-size: 32px; }
+}
+
+/* ── Elevation shadows ───────────────────────────────── */
+.shadow-elev-1 {
+  box-shadow: 0 1px 2px rgba(255,255,255,0.05), inset 0 1px 0 rgba(255,255,255,0.04);
+}
+
+.shadow-elev-2 {
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.08), 0 1px 3px rgba(0,0,0,0.3), 0 5px 10px rgba(0,0,0,0.2);
+}
+
+.shadow-elev-3 {
+  box-shadow: 0 8px 8px rgba(0,0,0,0.1), 0 4px 4px rgba(0,0,0,0.1), 0 2px 2px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.1);
+}
+
+.shadow-elev-4 {
+  box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+}
